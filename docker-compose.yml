@@ -1,0 +1,24 @@
+version: "3.8"
+
+volumes:
+  docker_volumes:
+
+
+services:
+  web-app:
+    container_name: spacex
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    image: spacex:latest
+    env_file: .env
+    environment:
+      - API_URL=${API_URL}
+    volumes:
+      - /web-app/node_modules
+      - ./:/web-app:cached
+      - /web-app/.next
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
